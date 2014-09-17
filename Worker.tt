@@ -3,19 +3,17 @@ using System.Threading;
 
 namespace <#= zmqNamespace #>
 {
-    public abstract class Worker : IService
+    public abstract class Worker
     {
         public static int DelayBeforeAbort = 5000;
 
         private static readonly ManualResetEvent TerminateEvent = new ManualResetEvent(false);
         private Thread _newThread;
-        protected readonly ILogger Logger;
 
         public string Name { get { return GetType().Name; } }
 
-        protected Worker(ILogManager logManager)
+        protected Worker()
         {
-            Logger = logManager.GetLogger(Name);
         }
 
         protected abstract void WorkTick();
@@ -44,22 +42,20 @@ namespace <#= zmqNamespace #>
             {
                 if (!_newThread.Join(DelayBeforeAbort))
                 {
-                    Abort();
+                    AbortThread();
                     _newThread.Join();
                 }
             }
             _newThread = null;
         }
 
-        protected virtual void Abort()
+        protected virtual void AbortThread()
         {
-            Logger.Warn("Aborting {0}", Name);
             _newThread.Abort();
         }
 
         public virtual void Dispose()
         {
-            Logger.Info("Disposing {0}", Name);
             if (_newThread != null) Stop();
         }
 

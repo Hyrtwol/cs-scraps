@@ -9,6 +9,13 @@ using System.Threading;
 
 namespace <#= zmqNamespace #>
 {
+    public interface IWindowsService : IDisposable
+    {
+        string Name { get; }
+        void Start();
+        void Stop();
+    }
+
     public class WindowsService : ServiceBase
     {
         // Required designer variable.
@@ -22,7 +29,7 @@ namespace <#= zmqNamespace #>
         private static readonly string Title = Assembly.GetEntryAssembly().GetName().Name;
         private static readonly ConsoleColor DefaultColor = Console.ForegroundColor;
 
-        public static void Run(IService service)
+        public static void Run(IWindowsService service)
         {
             var texlService = new WindowsService(service);
             if (Environment.UserInteractive)
@@ -55,9 +62,9 @@ namespace <#= zmqNamespace #>
             }
         }
 
-        private readonly IService _service;
+        private readonly IWindowsService _service;
 
-        private WindowsService(IService service)
+        private WindowsService(IWindowsService service)
         {
             ServiceName = service.Name;
             _service = service;
