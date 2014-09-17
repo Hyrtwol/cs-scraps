@@ -1,11 +1,5 @@
 ﻿<#@ include file="Shared.tt" #>
 using System;
-using System.Configuration;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.ServiceProcess;
-using System.Threading;
 
 namespace <#= zmqNamespace #>
 {
