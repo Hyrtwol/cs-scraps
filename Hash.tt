@@ -1,0 +1,157 @@
+﻿<#@ include file="Shared.tt" #>
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+
+namespace <#= zmqNamespace #>
+{
+    /// <summary>
+    /// This struct represent a hash code of 16 bytes.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Size = 16)]
+    public struct <#= zmqClassName #>
+    {
+        const int SizeOfHashInBytes = 16;
+        const int SizeOfHashInChars = SizeOfHashInBytes * 2;
+
+        public static unsafe <#= zmqClassName #> NewHash(byte[] bytes)
+        {
+            if (bytes == null) throw new ArgumentNullException("bytes");
+            if (bytes.Length != SizeOfHashInBytes) throw new ArgumentOutOfRangeException("bytes", "Length must be " + SizeOfHashInBytes + " bytes");
+            fixed (byte* pSource = bytes)
+            {
+                return *((<#= zmqClassName #>*)(pSource));
+            }
+        }
+
+        private static unsafe <#= zmqClassName #> NewHash(Guid guid)
+        {
+            // since Guid and Hash are both value-types and is the same size (16 bytes) a simple pointer cast will do the trick
+            // take the address of guid, cast it to a Hash pointer, take the value of the Hash pointer address
+            return *((<#= zmqClassName #>*)(&guid));
+        }
+
+        public static <#= zmqClassName #> NewUniqueHash()
+        {
+            return NewHash(Guid.NewGuid());
+        }
+
+        public unsafe byte[] ToByteArray()
+        {
+            var bytes = new byte[SizeOfHashInBytes];
+            fixed (byte* pByte = bytes)
+            {
+                *((<#= zmqClassName #>*)(pByte)) = this;
+            }
+            return bytes;
+        }
+
+        public string ToHexString()
+        {
+            return string.Concat(ToByteArray().Select(b => b.ToString("x2")));
+        }
+
+        public override string ToString()
+        {
+            return ToHexString();
+        }
+
+        public static explicit operator string(<#= zmqClassName #> hash)
+        {
+            return hash.ToHexString();
+        }
+
+        public static explicit operator byte[](<#= zmqClassName #> hash)
+        {
+            return hash.ToByteArray();
+        }
+
+        public static explicit operator <#= zmqClassName #>(byte[] bytes)
+        {
+            return NewHash(bytes);
+        }
+
+        public static explicit operator <#= zmqClassName #>(Guid guid)
+        {
+            return NewHash(guid);
+        }
+        
+        public unsafe bool Equals(<#= zmqClassName #> other)
+        {
+            fixed (<#= zmqClassName #>* pThis = &this)
+            {
+                long* pt = (long*)pThis, po = (long*)&other;
+                return (pt[0] == po[0]) & (pt[1] == po[1]);
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is <#= zmqClassName #> && Equals((<#= zmqClassName #>)obj);
+        }
+
+        public override unsafe int GetHashCode()
+        {
+            fixed (<#= zmqClassName #>* pSource = &this)
+            {
+                return *((int*)(pSource));
+            }
+        }
+
+        public static bool TryParse(string value, out <#= zmqClassName #> hash)
+        {
+            try
+            {
+                hash = Parse(value);
+                return true;
+            }
+            catch (Exception)
+            {
+                hash = new <#= zmqClassName #>();
+                return false;
+            }
+        }
+
+        public static <#= zmqClassName #> Parse(string value)
+        {
+            if (value == null) throw new ArgumentNullException("value");
+            if (value.Length != SizeOfHashInChars) throw new ArgumentOutOfRangeException("value", "Length must be " + SizeOfHashInChars + " chars");
+            var bytes = new byte[SizeOfHashInBytes];
+            for (int i = 0; i < SizeOfHashInBytes; i++)
+            {
+                bytes[i] = byte.Parse(value.Substring(i * 2, 2), NumberStyles.HexNumber);
+            }
+            return NewHash(bytes);
+        }
+
+        public static <#= zmqClassName #> ComputeMD5(string path)
+        {
+            using (var stream = File.OpenRead(path))
+            {
+                return ComputeMD5(stream);
+            }
+        }
+
+        public static <#= zmqClassName #> ComputeMD5(FileInfo fi)
+        {
+            using (var stream = fi.OpenRead())
+            {
+                return ComputeMD5(stream);
+            }
+        }
+
+        public static <#= zmqClassName #> ComputeMD5(Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException("stream");
+            using (var md5 = MD5.Create())
+            {
+                var bytes = md5.ComputeHash(stream);
+                return (<#= zmqClassName #>)bytes;
+            }
+        }
+    }
+}

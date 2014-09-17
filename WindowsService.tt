@@ -9,14 +9,14 @@ using System.Threading;
 
 namespace <#= zmqNamespace #>
 {
-    public interface IWindowsService : IDisposable
+    public interface I<#= zmqClassName #> : IDisposable
     {
         string Name { get; }
         void Start();
         void Stop();
     }
 
-    public class WindowsService : ServiceBase
+    public class <#= zmqClassName #> : ServiceBase
     {
         // Required designer variable.
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
@@ -29,9 +29,9 @@ namespace <#= zmqNamespace #>
         private static readonly string Title = Assembly.GetEntryAssembly().GetName().Name;
         private static readonly ConsoleColor DefaultColor = Console.ForegroundColor;
 
-        public static void Run(IWindowsService service)
+        public static void Run(I<#= zmqClassName #> service)
         {
-            var texlService = new WindowsService(service);
+            var texlService = new <#= zmqClassName #>(service);
             if (Environment.UserInteractive)
             {
                 ConfigureConsole();
@@ -62,9 +62,9 @@ namespace <#= zmqNamespace #>
             }
         }
 
-        private readonly IWindowsService _service;
+        private readonly I<#= zmqClassName #> _service;
 
-        private WindowsService(IWindowsService service)
+        private WindowsService(I<#= zmqClassName #> service)
         {
             ServiceName = service.Name;
             _service = service;
