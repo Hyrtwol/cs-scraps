@@ -25,12 +25,6 @@ namespace <#= zmqNamespace #>
         ILogger GetLogger(string name);
     }
 
-    public interface ILogConfig
-    {
-        string LogFileName { get; }
-        //string LogstashElasticsearchUrl { get; }
-    }
-
     public static class LogExtensions
     {
         public static ILogger GetLogger<T>(this ILogManager logManager)
