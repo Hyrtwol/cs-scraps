@@ -22,6 +22,16 @@ namespace <#= zmqNamespace #>
             }
             return val;
         }
+		
+        protected static string GetPath(string name, string defaultVal = null)
+        {
+            var path = GetString(name, defaultVal);
+            if (path.Contains("%"))
+            {
+                path = Environment.ExpandEnvironmentVariables(path);
+            }
+            return path;
+        }
 
         protected static TimeSpan GetTimeSpan(string name, TimeSpan defaultVal)
         {
