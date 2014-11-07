@@ -31,15 +31,15 @@ namespace <#= zmqNamespace #>
 
         public static void Run(I<#= zmqClassName #> service)
         {
-            var texlService = new <#= zmqClassName #>(service);
+            var windowsService = new <#= zmqClassName #>(service);
             if (Environment.UserInteractive)
             {
                 ConfigureConsole();
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Starting {0}     .oOo.   .oOo.   .oOo.   ", texlService.ServiceName);
+                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Starting {0}     .oOo.   .oOo.   .oOo.   ", windowsService.ServiceName);
                 Console.ForegroundColor = DefaultColor;
-                texlService.OnStart(null);
+                windowsService.OnStart(null);
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("   .oOo.   .oOo.   .oOo.    Press ESC to stop    .oOo.   .oOo.   .oOo.   ");
@@ -47,9 +47,9 @@ namespace <#= zmqNamespace #>
                 WairForEscape();
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Stopping {0}     .oOo.   .oOo.   .oOo.   ", texlService.ServiceName);
+                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Stopping {0}     .oOo.   .oOo.   .oOo.   ", windowsService.ServiceName);
                 Console.ForegroundColor = DefaultColor;
-                texlService.Stop();
+                windowsService.Stop();
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("   .oOo.   .oOo.   .oOo.    Press ESC to exit    .oOo.   .oOo.   .oOo.   ");
