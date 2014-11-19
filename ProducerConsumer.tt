@@ -19,6 +19,14 @@ namespace <#= zmqNamespace #>
                 }
             }
         }
+        
+        public bool Contains(T obj)
+        {
+            lock (_listLock)
+            {
+                return _queue.Contains(obj);
+            }
+        }
 
         public void Produce(T obj)
         {
