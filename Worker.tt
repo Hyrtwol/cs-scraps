@@ -10,7 +10,7 @@ namespace <#= zmqNamespace #>
         private static readonly ManualResetEvent TerminateEvent = new ManualResetEvent(false);
         private Thread _newThread;
 
-        public string Name { get { return GetType().Name; } }
+        public virtual string Name { get { return GetType().Name; } }
 
         protected Worker()
         {
