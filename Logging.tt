@@ -15,8 +15,8 @@ namespace <#= zmqNamespace #>
 
     public interface ILogger
     {
-        void Log(LogLevel level, string format, params object[] arguments);
         void Log(LogLevel level, object message);
+        void Log(LogLevel level, string format, params object[] arguments);
         void Log(Exception exception);
     }
 
