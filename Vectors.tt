@@ -1,0 +1,380 @@
+﻿<#@ include file="Shared.tt" #>
+<#
+    var frng = new []{ "float", "Float2", "Float3", "Float4" };
+    var drng = new []{ "double", "Double2", "Double3", "Double4" };
+    var hrng = new []{ "Half", "Half2", "Half3", "Half4" };
+    var irng = new []{ "int", "Int2", "Int3", "Int4" };
+    var brng = new []{ "byte", null, null, "Byte4" };
+	var zrng = new string[]{ };
+
+    var n = new []{ "X", "Y", "Z", "W" };
+    var c = new []{ "R", "G", "B", "A" };
+	var vectors = new[]
+    {
+        new { s=n, m=0, vector = "Byte4",     ne = 4, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { s=n, m=1, vector = "Int2",      ne = 2, type = "int",      size = 4, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
+        new { s=n, m=1, vector = "Int3",      ne = 3, type = "int",      size = 4, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
+        new { s=n, m=1, vector = "Int4",      ne = 4, type = "int",      size = 4, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { s=n, m=1, vector = "Float2",    ne = 2, type = "float",    size = 4, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f"           } },
+        new { s=n, m=1, vector = "Float3",    ne = 3, type = "float",    size = 4, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+        new { s=n, m=1, vector = "Float4",    ne = 4, type = "float",    size = 4, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+        new { s=c, m=0, vector = "FloatRGB",  ne = 3, type = "float",    size = 4, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+        new { s=c, m=0, vector = "FloatRGBA", ne = 4, type = "float",    size = 4, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+        new { s=n, m=1, vector = "Double2",   ne = 2, type = "double",   size = 8, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d"           } },
+        new { s=n, m=1, vector = "Double3",   ne = 3, type = "double",   size = 8, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d"      } },
+        new { s=n, m=1, vector = "Double4",   ne = 4, type = "double",   size = 8, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d","4d" } },
+        new { s=n, m=0, vector = "Half2",     ne = 2, type = "Half",     size = 2, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f" } },
+        new { s=n, m=0, vector = "Half3",     ne = 3, type = "Half",     size = 2, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f" } },
+        new { s=n, m=0, vector = "Half4",     ne = 4, type = "Half",     size = 2, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f","(Half)4f" } },
+        new { s=c, m=0, vector = "ByteRGB",   ne = 3, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3"       } },
+        new { s=c, m=0, vector = "ByteRGBA",  ne = 4, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+        new { s=c, m=0, vector = "ByteBGRA",  ne = 4, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+		new { s=n, m=0, vector = "Bool4",     ne = 4, type = "bool",     size = 1, rng=zrng, zo=new[]{"false","true"},   data = new []{ "true", "false", "false", "true" } },
+		new { s=n, m=0, vector = "LongBool4", ne = 4, type = "LongBool", size = 4, rng=zrng, zo=new[]{"false","true"},   data = new []{ "LongBool.True", "LongBool.False", "LongBool.False", "LongBool.True" } }
+    };
+#>
+using System;
+using System.Runtime.InteropServices;
+
+namespace <#= zmqNamespace #>
+{
+<# foreach (var vector in vectors) { 
+
+#>
+    [Serializable, StructLayout(LayoutKind.Sequential, Pack = <#= vector.size #>)]
+    <#= zmqVisibility #><#= zmqPartial #> struct <#= vector.vector #> : IEquatable<<#= vector.vector #>>, IJsonFormattable
+    {
+        public static readonly int SizeInBytes = Marshal.SizeOf(typeof (<#= vector.vector #>));
+
+        public static readonly <#= vector.vector #> Zero = new <#= vector.vector #>(<#= vector.zo[0] #>);
+        public static readonly <#= vector.vector #> One = new <#= vector.vector #>(<#= vector.zo[1] #>);
+<# if(vector.ne == 2) { #>
+		public static readonly <#= vector.vector #> UnitX = new <#= vector.vector #>(<#= vector.zo[1] #>, <#= vector.zo[0] #>);
+		public static readonly <#= vector.vector #> UnitY = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[1] #>);
+<# } else if(vector.ne == 3) { #>
+		public static readonly <#= vector.vector #> UnitX = new <#= vector.vector #>(<#= vector.zo[1] #>, <#= vector.zo[0] #>, <#= vector.zo[0] #>);
+		public static readonly <#= vector.vector #> UnitY = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[1] #>, <#= vector.zo[0] #>);
+		public static readonly <#= vector.vector #> UnitZ = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[1] #>);
+<# } else if(vector.ne == 4) { #>
+		public static readonly <#= vector.vector #> UnitX = new <#= vector.vector #>(<#= vector.zo[1] #>, <#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[0] #>);
+		public static readonly <#= vector.vector #> UnitY = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[1] #>, <#= vector.zo[0] #>, <#= vector.zo[0] #>);
+		public static readonly <#= vector.vector #> UnitZ = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[1] #>, <#= vector.zo[0] #>);
+		public static readonly <#= vector.vector #> UnitW = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[1] #>);
+<# } #>
+<# if(vector.m>0) { #>
+<# if(vector.ne == 3) { #>
+        public static readonly <#= vector.vector #> Up = UnitY;
+        public static readonly <#= vector.vector #> Down = -UnitY;
+        public static readonly <#= vector.vector #> Left = -UnitX;
+        public static readonly <#= vector.vector #> Right = UnitX;
+        public static readonly <#= vector.vector #> ForwardRH = -UnitZ;
+        public static readonly <#= vector.vector #> ForwardLH = UnitZ;
+        public static readonly <#= vector.vector #> BackwardRH = UnitZ;
+        public static readonly <#= vector.vector #> BackwardLH = -UnitZ;
+<# } #>
+<# } #>
+
+<# if(vector.vector == "ByteBGRA") { #>
+        public <#= vector.type #> <#= vector.s[2] #>;
+        public <#= vector.type #> <#= vector.s[1] #>;
+        public <#= vector.type #> <#= vector.s[0] #>;
+        public <#= vector.type #> <#= vector.s[3] #>;
+<# } else { #>
+<# for (int i = 0; i < vector.ne; i++) { #>
+        public <#= vector.type #> <#= vector.s[i] #>;
+<# } #>
+<# } #>
+
+<# /*CONSTRUCTORS*/ #>
+        public <#= vector.vector #>(<#= vector.type #> value)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            <#= vector.s[i] #> = value;
+<# } #>
+        }
+
+<# if(vector.ne == 2) { #>
+        public <#= vector.vector #>(<#= vector.type #> <#= vector.s[0].ToLower() #>, <#= vector.type #> <#= vector.s[1].ToLower() #>)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            <#= vector.s[i] #> = <#= vector.s[i].ToLower() #>;
+<# } #>
+        }
+<# } else if(vector.ne == 3) { #>
+        public <#= vector.vector #>(<#= vector.type #> <#= vector.s[0].ToLower() #>, <#= vector.type #> <#= vector.s[1].ToLower() #>, <#= vector.type #> <#= vector.s[2].ToLower() #>)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            <#= vector.s[i] #> = <#= vector.s[i].ToLower() #>;
+<# } #>
+        }
+<# } else if(vector.ne == 4) { #>
+        public <#= vector.vector #>(<#= vector.type #> <#= vector.s[0].ToLower() #>, <#= vector.type #> <#= vector.s[1].ToLower() #>, <#= vector.type #> <#= vector.s[2].ToLower() #>, <#= vector.type #> <#= vector.s[3].ToLower() #>)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            <#= vector.s[i] #> = <#= vector.s[i].ToLower() #>;
+<# } #>
+        }
+<# } #>
+		
+        public <#= vector.vector #>(<#= vector.type #>[] values)
+        {
+            if (values == null) throw new ArgumentNullException("values");
+            if (values.Length != <#= vector.ne #>) throw new ArgumentOutOfRangeException("values", "There must be <#= vector.ne #> and only <#= vector.ne #> input values for <#= vector.vector #>.");
+<# for (int i = 0; i < vector.ne; i++) { #>
+            <#= vector.s[i] #> = values[<#= i #>];
+<# } #>
+        }
+<# if(vector.m>0 && vector.ne > 2 && vector.rng.Length > 0) { #>
+
+        public <#= vector.vector #>(<#= vector.rng[vector.ne-2] #> value, <#= vector.type #> <#= vector.s[vector.ne-1].ToLower() #>)
+        {
+<# for (int i = 0; i < vector.ne-1; i++) { #>
+            <#= vector.s[i] #> = value.<#= vector.s[i] #>;
+<# } #>
+            <#= vector.s[vector.ne-1] #> = <#= vector.s[vector.ne-1].ToLower() #>;
+        }
+<# if(vector.ne > 3) { #>
+
+        public <#= vector.vector #>(<#= vector.rng[vector.ne-3] #> value, <#= vector.type #> <#= vector.s[vector.ne-2].ToLower() #>, <#= vector.type #> <#= vector.s[vector.ne-1].ToLower() #>)
+        {
+<# for (int i = 0; i < vector.ne-2; i++) { #>
+            <#= vector.s[i] #> = value.<#= vector.s[i] #>;
+<# } #>
+            <#= vector.s[vector.ne-2] #> = <#= vector.s[vector.ne-2].ToLower() #>;
+            <#= vector.s[vector.ne-1] #> = <#= vector.s[vector.ne-1].ToLower() #>;
+        }
+<# } #>
+<# } #>
+
+<# if(vector.ne > 2 && vector.rng.Length > 0) { #>
+        public static unsafe explicit operator <#= vector.rng[vector.ne-2] #>(<#= vector.vector #>  value)
+        {
+            return *(<#= vector.rng[vector.ne-2] #>*)&value;
+        }
+		
+<# if(vector.ne > 3) { #>
+        public static unsafe explicit operator <#= vector.rng[vector.ne-3] #>(<#= vector.vector #>  value)
+        {
+            return *(<#= vector.rng[vector.ne-3] #>*)&value;
+        }
+		
+        public static explicit operator <#= vector.vector #>(<#= vector.rng[vector.ne-2] #> value)
+        {
+            return new <#= vector.vector #>(value, <#= vector.zo[0] #>);
+        }
+
+<# } #>
+<# } #>
+<# /*OPERATORS*/ #>
+
+<# if(vector.m>0) { #>
+<#
+        //public static Float3 operator +(Float3 value)
+        //{
+        //    return value;
+        //}
+#>
+        public static <#= vector.vector #> operator -(<#= vector.vector #> value)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value.<#= vector.s[i] #> = -value.<#= vector.s[i] #>;
+<# } #>
+            return value;
+        }
+		
+        public static <#= vector.vector #> operator +(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> += value2.<#= vector.s[i] #>;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator +(<#= vector.vector #> value1, <#= vector.type #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> += value2;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator -(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> -= value2.<#= vector.s[i] #>;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator -(<#= vector.vector #> value1, <#= vector.type #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> -= value2;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator *(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> *= value2.<#= vector.s[i] #>;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator *(<#= vector.vector #> value1, <#= vector.type #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> *= value2;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator /(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> /= value2.<#= vector.s[i] #>;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator /(<#= vector.vector #> value1, <#= vector.type #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> /= value2;
+<# } #>
+            return value1;
+        }
+
+<# } #>
+        public static bool operator ==(<#= vector.vector #> left, <#= vector.vector #> right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(<#= vector.vector #> left, <#= vector.vector #> right)
+        {
+            return !left.Equals(right);
+        }
+
+        public bool Equals(<#= vector.vector #> other)
+        {
+<# if(vector.type=="float"||vector.type=="double") { #>
+            return (<#= string.Join(" && ", vector.s.Select(s=>"Epsilon.Compare("+s+", other."+s+")").Take(vector.ne)) #>);
+<# } else { #>
+            return (<#= string.Join(" && ", vector.s.Select(s=>s+" == other."+s).Take(vector.ne)) #>);
+<# } #>
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is <#= vector.vector #> && Equals((<#= vector.vector #>) obj);
+        }
+		
+        public override int GetHashCode()
+        {
+            return StructUtils.SmartGetHashCode(this);
+        }   
+
+        public override string ToString()
+        {
+            return ToJson();
+        }
+
+        public string ToJson()
+        {
+            return JsonFormatter.Format<#= vector.ne #>(<#= string.Join(", ", vector.s.Take(vector.ne)) #>);
+        }
+        
+        public <#= vector.type #> this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+<# for (int i = 0; i < vector.ne; i++) { #>
+                    case <#= i #>: return <#= vector.s[i] #>;
+<# } #>
+                }
+                throw new ArgumentOutOfRangeException("index", "Indices for <#= vector.vector #> run from 0 to <#= vector.ne-1 #>, inclusive.");
+            }
+            set
+            {
+                switch (index)
+                {
+<# for (int i = 0; i < vector.ne; i++) { #>
+                    case <#= i #>: <#= vector.s[i] #> = value; break;
+<# } #>
+                    default: throw new ArgumentOutOfRangeException("index", "Indices for <#= vector.vector #> run from 0 to <#= vector.ne-1 #>, inclusive.");
+                }
+            }
+        }
+		
+        public <#= vector.type #>[] ToArray()
+        {
+            return new[] { <#= string.Join(", ", vector.s.Take(vector.ne)) #> };
+        }
+		
+<# /*MATH*/ #>
+<# if(vector.m>0) { #>
+        public <#= vector.type #> Length()
+        {
+            return (<#= vector.type #>)Math.Sqrt(<#= string.Join(" + ", vector.s.Select(s=>s+" * "+s).Take(vector.ne)) #>);
+        }
+
+        public <#= vector.type #> LengthSquared()
+        {
+            return <#= string.Join(" + ", vector.s.Select(s=>s+" * "+s).Take(vector.ne)) #>;
+        }
+		
+<# } /*END MATH*/#>
+<#
+/*SKIP IT! 
+
+
+
+
+#>
+        public <#= vector.type #> this[VectorElement<#= vector.ne #> index]
+        {
+            get
+            {
+                switch (index)
+                {
+<# for (int i = 0; i < vector.ne; i++) { #>
+                    case VectorElement<#= vector.ne #>.<#= n[i] #>: return <#= vector.s[i] #>;
+<# } #>
+                }
+                throw new ArgumentOutOfRangeException("index", "Indices for <#= vector.vector #> run from 0 to <#= vector.ne-1 #>, inclusive.");
+            }
+            set
+            {
+                switch (index)
+                {
+<# for (int i = 0; i < vector.ne; i++) { #>
+                    case VectorElement<#= vector.ne #>.<#= n[i] #>: <#= vector.s[i] #> = value; break;
+<# } #>
+                    default: throw new ArgumentOutOfRangeException("index", "Indices for <#= vector.vector #> run from 0 to <#= vector.ne-1 #>, inclusive.");
+                }
+            }
+        }
+		
+        public int NumberOfElements { get { return <#= vector.ne #>; } }
+
+        public Type ElementType { get { return typeof(<#= vector.type #>); } }
+
+        public int ElementSize { get { return <#= vector.size #>; } }
+
+        public VectorElementFlags ElementFlags { get { return VectorElementFlags.<#= string.Concat(n.Take(vector.ne).ToArray()) #>; } }
+
+        public IEnumerable GetElements()
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            yield return <#= vector.s[i] #>;
+<# } #>
+        }
+<# */ #>
+    }
+
+<# } // vector end loop #>
+}
