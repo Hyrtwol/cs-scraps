@@ -44,7 +44,11 @@ namespace <#= zmqNamespace #>
     [Serializable, StructLayout(LayoutKind.Sequential, Pack = <#= vector.size #>)]
     <#= zmqVisibility #><#= zmqPartial #> struct <#= vector.vector #> : IEquatable<<#= vector.vector #>>, IJsonFormattable
     {
+<# if(vector.vector == "Bool4") { #>
+        public static readonly unsafe int SizeInBytes = sizeof(Bool4);
+<# } else { #>
         public static readonly int SizeInBytes = Marshal.SizeOf(typeof (<#= vector.vector #>));
+<# } #>
 
         public static readonly <#= vector.vector #> Zero = new <#= vector.vector #>(<#= vector.zo[0] #>);
         public static readonly <#= vector.vector #> One = new <#= vector.vector #>(<#= vector.zo[1] #>);
