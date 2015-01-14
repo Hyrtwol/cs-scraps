@@ -221,8 +221,16 @@ namespace <#= zmqNamespace #>
 <# } #>
             return value1;
         }
-
+		
         public static <#= vector.vector #> operator *(<#= vector.vector #> value1, <#= vector.type #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> *= value2;
+<# } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator *(<#= vector.type #> value2, <#= vector.vector #> value1)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
             value1.<#= vector.s[i] #> *= value2;
