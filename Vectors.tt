@@ -124,8 +124,15 @@ namespace <#= zmqNamespace #>
         {
             if (values == null) throw new ArgumentNullException("values");
             if (values.Length != <#= vector.ne #>) throw new ArgumentOutOfRangeException("values", "There must be <#= vector.ne #> and only <#= vector.ne #> input values for <#= vector.vector #>.");
+<# if(vector.vector == "ByteBGRA") { #>
+            <#= vector.s[2] #> = values[0];
+            <#= vector.s[1] #> = values[1];
+            <#= vector.s[0] #> = values[2];
+            <#= vector.s[3] #> = values[3];
+<# } else { #>
 <# for (int i = 0; i < vector.ne; i++) { #>
             <#= vector.s[i] #> = values[<#= i #>];
+<# } #>
 <# } #>
         }
 <# if(vector.m>0 && vector.ne > 2 && vector.rng.Length > 0) { #>
@@ -295,7 +302,11 @@ namespace <#= zmqNamespace #>
 
         public string ToJson()
         {
+<# if(vector.s == c) { #>
+            return JsonFormatter.Format<#= string.Concat(vector.s.Take(vector.ne)) #>(<#= string.Join(", ", vector.s.Take(vector.ne)) #>);
+<# } else { #>
             return JsonFormatter.Format<#= vector.ne #>(<#= string.Join(", ", vector.s.Take(vector.ne)) #>);
+<# } #>
         }
         
         public <#= vector.type #> this[int index]
@@ -324,7 +335,11 @@ namespace <#= zmqNamespace #>
 		
         public <#= vector.type #>[] ToArray()
         {
+<# if(vector.vector == "ByteBGRA") { #>
+            return new[] { <#= string.Join(", ", vector.s[2], vector.s[1], vector.s[0], vector.s[3]) #> };
+<# } else { #>
             return new[] { <#= string.Join(", ", vector.s.Take(vector.ne)) #> };
+<# } #>
         }
 		
 <# /*MATH*/ #>
