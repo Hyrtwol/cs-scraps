@@ -225,17 +225,20 @@ namespace <#= zmqNamespace #>
         }
 
 <# } #>
-<# if(vector.m>=1) { #>
+<# if(vector.m>0) { 
+// add basic math
+#>
 <# /*
         public static Float3 operator +(Float3 value)
         {
             return value;
         }
 */ #>
+<# if(vector.type != "byte") { #>
         public static <#= vector.vector #> operator -(<#= vector.vector #> value)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
-<# if(vector.size==1) { #>
+<# if(vector.size<4) { #>
             value.<#= vector.s[i] #> = (<#= vector.type #>)(-value.<#= vector.s[i] #>);
 <# } else { #>
             value.<#= vector.s[i] #> = -value.<#= vector.s[i] #>;
@@ -244,7 +247,8 @@ namespace <#= zmqNamespace #>
             return value;
         }
 		
-<# // add basic math
+<# } 
+
 foreach (var math in maths) { #>
         public static <#= vector.vector #> operator <#= math.sign #>(<#= vector.vector #> value1, <#= vector.vector #> value2)
         {
@@ -271,8 +275,8 @@ foreach (var math in maths) { #>
         }
 
 <# }
-// basic math end #>
-<# } #>
+} // basic math end
+#>
         public static bool operator ==(<#= vector.vector #> left, <#= vector.vector #> right)
         {
             return left.Equals(right);
@@ -576,49 +580,8 @@ if(vector.m>=2) {
         }
 
 <# } #>
-<# } } /*END MATH*/#>
-<#
-/* SKIP IT START #>
-        public <#= vector.type #> this[VectorElement<#= vector.ne #> index]
-        {
-            get
-            {
-                switch (index)
-                {
-<# for (int i = 0; i < vector.ne; i++) { #>
-                    case VectorElement<#= vector.ne #>.<#= n[i] #>: return <#= vector.s[i] #>;
-<# } #>
-                }
-                throw new ArgumentOutOfRangeException("index", "Indices for <#= vector.vector #> run from 0 to <#= vector.ne-1 #>, inclusive.");
-            }
-            set
-            {
-                switch (index)
-                {
-<# for (int i = 0; i < vector.ne; i++) { #>
-                    case VectorElement<#= vector.ne #>.<#= n[i] #>: <#= vector.s[i] #> = value; break;
-<# } #>
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for <#= vector.vector #> run from 0 to <#= vector.ne-1 #>, inclusive.");
-                }
-            }
-        }
-		
-        public int NumberOfElements { get { return <#= vector.ne #>; } }
+<# } } // MATH END #>
+    } // <#= vector.vector #> end
 
-        public Type ElementType { get { return typeof(<#= vector.type #>); } }
-
-        public int ElementSize { get { return <#= vector.size #>; } }
-
-        public VectorElementFlags ElementFlags { get { return VectorElementFlags.<#= string.Concat(n.Take(vector.ne).ToArray()) #>; } }
-
-        public IEnumerable GetElements()
-        {
-<# for (int i = 0; i < vector.ne; i++) { #>
-            yield return <#= vector.s[i] #>;
-<# } #>
-        }
-<# SKIP IT END */ #>
-    }
-
-<# } // vector end loop #>
+<# } // vector loop end #>
 }
