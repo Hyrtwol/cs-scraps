@@ -11,27 +11,36 @@
     var c = new []{ "R", "G", "B", "A" };
 	var vectors = new[]
     {
-        new { s=n, m=0, vector = "Byte4",     ne = 4, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { s=n, m=1, vector = "Int2",      ne = 2, type = "int",      size = 4, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
-        new { s=n, m=1, vector = "Int3",      ne = 3, type = "int",      size = 4, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
-        new { s=n, m=1, vector = "Int4",      ne = 4, type = "int",      size = 4, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { s=n, m=1, vector = "Float2",    ne = 2, type = "float",    size = 4, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f"           } },
-        new { s=n, m=1, vector = "Float3",    ne = 3, type = "float",    size = 4, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
-        new { s=n, m=1, vector = "Float4",    ne = 4, type = "float",    size = 4, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
-        new { s=c, m=0, vector = "FloatRGB",  ne = 3, type = "float",    size = 4, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
-        new { s=c, m=0, vector = "FloatRGBA", ne = 4, type = "float",    size = 4, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
-        new { s=n, m=1, vector = "Double2",   ne = 2, type = "double",   size = 8, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d"           } },
-        new { s=n, m=1, vector = "Double3",   ne = 3, type = "double",   size = 8, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d"      } },
-        new { s=n, m=1, vector = "Double4",   ne = 4, type = "double",   size = 8, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d","4d" } },
-        new { s=n, m=0, vector = "Half2",     ne = 2, type = "Half",     size = 2, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f" } },
-        new { s=n, m=0, vector = "Half3",     ne = 3, type = "Half",     size = 2, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f" } },
-        new { s=n, m=0, vector = "Half4",     ne = 4, type = "Half",     size = 2, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f","(Half)4f" } },
-        new { s=c, m=0, vector = "ByteRGB",   ne = 3, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3"       } },
-        new { s=c, m=0, vector = "ByteRGBA",  ne = 4, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
-        new { s=c, m=0, vector = "ByteBGRA",  ne = 4, type = "byte",     size = 1, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
-		new { s=n, m=0, vector = "Bool4",     ne = 4, type = "bool",     size = 1, rng=zrng, zo=new[]{"false","true"},   data = new []{ "true", "false", "false", "true" } },
-		new { s=n, m=0, vector = "LongBool4", ne = 4, type = "LongBool", size = 4, rng=zrng, zo=new[]{"false","true"},   data = new []{ "LongBool.True", "LongBool.False", "LongBool.False", "LongBool.True" } }
+        new { s=n, m=1, vector = "Byte4",     ne = 4, type = "byte",     size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { s=n, m=1, vector = "SByte4",    ne = 4, type = "sbyte",    size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { s=n, m=2, vector = "Int2",      ne = 2, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
+        new { s=n, m=2, vector = "Int3",      ne = 3, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
+        new { s=n, m=2, vector = "Int4",      ne = 4, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { s=n, m=2, vector = "Float2",    ne = 2, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f"           } },
+        new { s=n, m=2, vector = "Float3",    ne = 3, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+        new { s=n, m=2, vector = "Float4",    ne = 4, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+        new { s=c, m=0, vector = "FloatRGB",  ne = 3, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+        new { s=c, m=0, vector = "FloatRGBA", ne = 4, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+        new { s=n, m=2, vector = "Double2",   ne = 2, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d"           } },
+        new { s=n, m=2, vector = "Double3",   ne = 3, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d"      } },
+        new { s=n, m=2, vector = "Double4",   ne = 4, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d","4d" } },
+        new { s=n, m=0, vector = "Half2",     ne = 2, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f" } },
+        new { s=n, m=0, vector = "Half3",     ne = 3, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f" } },
+        new { s=n, m=0, vector = "Half4",     ne = 4, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f","(Half)4f" } },
+        new { s=c, m=0, vector = "ByteRGB",   ne = 3, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3"       } },
+        new { s=c, m=0, vector = "ByteRGBA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+        new { s=c, m=0, vector = "ByteBGRA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+		new { s=n, m=0, vector = "Bool4",     ne = 4, type = "bool",     size = 1, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "true", "false", "false", "true" } },
+		new { s=n, m=0, vector = "LongBool4", ne = 4, type = "LongBool", size = 4, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "LongBool.True", "LongBool.False", "LongBool.False", "LongBool.True" } }
     };
+
+	var maths = new[]
+	{
+	    new { name = "Add", sign="+" },
+	    new { name = "Subtract", sign="-" },
+	    new { name = "Multiply", sign="*" },
+	    new { name = "Divide", sign="/" }
+	};
 #>
 using System;
 using System.Runtime.InteropServices;
@@ -65,7 +74,7 @@ namespace <#= zmqNamespace #>
 		public static readonly <#= vector.vector #> UnitZ = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[1] #>, <#= vector.zo[0] #>);
 		public static readonly <#= vector.vector #> UnitW = new <#= vector.vector #>(<#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[0] #>, <#= vector.zo[1] #>);
 <# } #>
-<# if(vector.m>0) { #>
+<# if(vector.m>=2) { #>
 <# if(vector.ne == 3) { #>
         public static readonly <#= vector.vector #> Up = UnitY;
         public static readonly <#= vector.vector #> Down = -UnitY;
@@ -89,7 +98,12 @@ namespace <#= zmqNamespace #>
 <# } #>
 <# } #>
 
-<# /*CONSTRUCTORS*/ #>
+<#
+/************************************
+             CONSTRUCTORS
+
+************************************/
+#>
         public <#= vector.vector #>(<#= vector.type #> value)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
@@ -176,95 +190,88 @@ namespace <#= zmqNamespace #>
 
 <# } #>
 <# } #>
-<# /*OPERATORS*/ #>
-
-<# if(vector.m>0) { #>
 <#
-        //public static Float3 operator +(Float3 value)
-        //{
-        //    return value;
-        //}
+/************************************
+             OPERATORS
+
+************************************/
 #>
+<# if(vector.ne*vector.size == 4) { #>
+<# /* foreach (var vector2 in vectors.Where(v=>(v.vector!=vector.vector) && (v.type==vector.type) && (v.ne*v.size == 4))) { #>
+        public static unsafe explicit operator <#= vector.vector #>(<#= vector2.vector #> value)
+        {
+            return *(<#= vector.vector #>*)&value;
+        }
+
+<# }*/ #>
+        public static unsafe explicit operator <#= vector.vector #>(int value)
+        {
+            return *(<#= vector.vector #>*)&value;
+        }
+
+        public static unsafe explicit operator <#= vector.vector #>(uint value)
+        {
+            return *(<#= vector.vector #>*)&value;
+        }
+
+        public static unsafe explicit operator int(<#= vector.vector #> value)
+        {
+            return *(int*)&value;
+        }
+
+        public static unsafe explicit operator uint(<#= vector.vector #> value)
+        {
+            return *(uint*)&value;
+        }
+
+<# } #>
+<# if(vector.m>=1) { #>
+<# /*
+        public static Float3 operator +(Float3 value)
+        {
+            return value;
+        }
+*/ #>
         public static <#= vector.vector #> operator -(<#= vector.vector #> value)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
+<# if(vector.size==1) { #>
+            value.<#= vector.s[i] #> = (<#= vector.type #>)(-value.<#= vector.s[i] #>);
+<# } else { #>
             value.<#= vector.s[i] #> = -value.<#= vector.s[i] #>;
+<# } #>
 <# } #>
             return value;
         }
 		
-        public static <#= vector.vector #> operator +(<#= vector.vector #> value1, <#= vector.vector #> value2)
+<# // add basic math
+foreach (var math in maths) { #>
+        public static <#= vector.vector #> operator <#= math.sign #>(<#= vector.vector #> value1, <#= vector.vector #> value2)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> += value2.<#= vector.s[i] #>;
-<# } #>
-            return value1;
-        }
-
-        public static <#= vector.vector #> operator +(<#= vector.vector #> value1, <#= vector.type #> value2)
-        {
-<# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> += value2;
-<# } #>
-            return value1;
-        }
-
-        public static <#= vector.vector #> operator -(<#= vector.vector #> value1, <#= vector.vector #> value2)
-        {
-<# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> -= value2.<#= vector.s[i] #>;
-<# } #>
-            return value1;
-        }
-
-        public static <#= vector.vector #> operator -(<#= vector.vector #> value1, <#= vector.type #> value2)
-        {
-<# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> -= value2;
-<# } #>
-            return value1;
-        }
-
-        public static <#= vector.vector #> operator *(<#= vector.vector #> value1, <#= vector.vector #> value2)
-        {
-<# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> *= value2.<#= vector.s[i] #>;
+            value1.<#= vector.s[i] #> <#= math.sign #>= value2.<#= vector.s[i] #>;
 <# } #>
             return value1;
         }
 		
-        public static <#= vector.vector #> operator *(<#= vector.vector #> value1, <#= vector.type #> value2)
+        public static <#= vector.vector #> operator <#= math.sign #>(<#= vector.vector #> value1, <#= vector.type #> value2)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> *= value2;
+            value1.<#= vector.s[i] #> <#= math.sign #>= value2;
 <# } #>
             return value1;
         }
 
-        public static <#= vector.vector #> operator *(<#= vector.type #> value2, <#= vector.vector #> value1)
+        public static <#= vector.vector #> operator <#= math.sign #>(<#= vector.type #> value1, <#= vector.vector #> value2)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> *= value2;
+            value2.<#= vector.s[i] #> <#= math.sign #>= value1;
 <# } #>
-            return value1;
+            return value2;
         }
 
-        public static <#= vector.vector #> operator /(<#= vector.vector #> value1, <#= vector.vector #> value2)
-        {
-<# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> /= value2.<#= vector.s[i] #>;
-<# } #>
-            return value1;
-        }
-
-        public static <#= vector.vector #> operator /(<#= vector.vector #> value1, <#= vector.type #> value2)
-        {
-<# for (int i = 0; i < vector.ne; i++) { #>
-            value1.<#= vector.s[i] #> /= value2;
-<# } #>
-            return value1;
-        }
-
+<# }
+// basic math end #>
 <# } #>
         public static bool operator ==(<#= vector.vector #> left, <#= vector.vector #> right)
         {
@@ -275,7 +282,13 @@ namespace <#= zmqNamespace #>
         {
             return !left.Equals(right);
         }
-
+<#
+/************************************
+             EQUALITY
+			 FORMAT
+			 INDEXER
+************************************/
+#>
         public bool Equals(<#= vector.vector #> other)
         {
 <# if(vector.type=="float"||vector.type=="double") { #>
@@ -342,26 +355,230 @@ namespace <#= zmqNamespace #>
 <# } #>
         }
 		
-<# /*MATH*/ #>
-<# if(vector.m>0) { #>
+<#
+/************************************
+             MATH
+
+************************************/
+if(vector.m>=1) { 
+// add basic math
+foreach (var math in maths) { #>
+        public static void <#= math.name #>(ref <#= vector.vector #> left, ref <#= vector.vector #> right, out <#= vector.vector #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+<# if(vector.cast == 1) { #>
+            result.<#= vector.s[i] #> = (<#= vector.type #>)(left.<#= vector.s[i] #> <#= math.sign #> right.<#= vector.s[i] #>);
+<# } else { #>
+            result.<#= vector.s[i] #> = left.<#= vector.s[i] #> <#= math.sign #> right.<#= vector.s[i] #>;
+<# } #>
+<# } #>
+        }
+		
+        public static <#= vector.vector #> <#= math.name #>(<#= vector.vector #> left, <#= vector.vector #> right)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            left.<#= vector.s[i] #> <#= math.sign #>= right.<#= vector.s[i] #>;
+<# } #>
+            return left;
+        }
+
+        public static void <#= math.name #>(ref <#= vector.vector #> left, <#= vector.type #> right, out <#= vector.vector #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+<# if(vector.cast == 1) { #>
+            result.<#= vector.s[i] #> = (<#= vector.type #>)(left.<#= vector.s[i] #> <#= math.sign #> right);
+<# } else { #>
+            result.<#= vector.s[i] #> = left.<#= vector.s[i] #> <#= math.sign #> right;
+<# } #>
+<# } #>
+        }
+		
+        public static <#= vector.vector #> <#= math.name #>(<#= vector.vector #> left, <#= vector.type #> right)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+            left.<#= vector.s[i] #> <#= math.sign #>= right;
+<# } #>
+            return left;
+        }
+		
+<# }
+// basic math end
+if(vector.m>=2) {
+#>
+<# if(vector.type != "byte") { #>
+        public static void Negate(ref <#= vector.vector #> value, out <#= vector.vector #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+<# if(vector.cast == 1) { #>
+            result.<#= vector.s[i] #> = (<#= vector.type #>)(-value.<#= vector.s[i] #>);
+<# } else { #>
+            result.<#= vector.s[i] #> = -value.<#= vector.s[i] #>;
+<# } #>
+<# } #>
+        }
+
+        public static <#= vector.vector #> Negate(<#= vector.vector #> value)
+        {
+<# for (int i = 0; i < vector.ne; i++) { #>
+<# if(vector.cast == 1) { #>
+            value.<#= vector.s[i] #> = (<#= vector.type #>)(-value.<#= vector.s[i] #>);
+<# } else { #>
+            value.<#= vector.s[i] #> = -value.<#= vector.s[i] #>;
+<# } #>
+<# } #>
+            return value;
+        }
+
+<# } #>
         public <#= vector.type #> Length()
         {
-            return (<#= vector.type #>)Math.Sqrt(<#= string.Join(" + ", vector.s.Select(s=>s+" * "+s).Take(vector.ne)) #>);
+            return (<#= vector.type #>)Math.Sqrt(<#= string.Join(" + ", vector.s.Select(s=>"("+s+"*"+s+")").Take(vector.ne)) #>);
         }
 
         public <#= vector.type #> LengthSquared()
         {
-            return <#= string.Join(" + ", vector.s.Select(s=>s+" * "+s).Take(vector.ne)) #>;
+            return <#= string.Join(" + ", vector.s.Select(s=>"("+s+"*"+s+")").Take(vector.ne)) #>;
         }
 		
-<# } /*END MATH*/#>
+        public static void Distance(ref <#= vector.vector #> value1, ref <#= vector.vector #> value2, out <#= vector.type #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            var <#= lwr #> = value1.<#= vector.s[i] #> - value2.<#= vector.s[i] #>;
+<# } #>
+			result = (<#= vector.type #>)Math.Sqrt(<#= string.Join(" + ", vector.s.Select(s=>("("+s+"*"+s+")").ToLower()).Take(vector.ne)) #>);
+        }
+
+        public static <#= vector.type #> Distance(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            var <#= lwr #> = value1.<#= vector.s[i] #> - value2.<#= vector.s[i] #>;
+<# } #>
+			return (<#= vector.type #>)Math.Sqrt(<#= string.Join(" + ", vector.s.Select(s=>("("+s+"*"+s+")").ToLower()).Take(vector.ne)) #>);
+        }
+
+        public static void DistanceSquared(ref <#= vector.vector #> value1, ref <#= vector.vector #> value2, out <#= vector.type #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            var <#= lwr #> = value1.<#= vector.s[i] #> - value2.<#= vector.s[i] #>;
+<# } #>
+			result = <#= string.Join(" + ", vector.s.Select(s=>("("+s+"*"+s+")").ToLower()).Take(vector.ne)) #>;
+        }
+
+        public static <#= vector.type #> DistanceSquared(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            var <#= lwr #> = value1.<#= vector.s[i] #> - value2.<#= vector.s[i] #>;
+<# } #>
+			return <#= string.Join(" + ", vector.s.Select(s=>("("+s+"*"+s+")").ToLower()).Take(vector.ne)) #>;
+        }
+		
+        public static void Min(ref <#= vector.vector #> left, ref <#= vector.vector #> right, out <#= vector.vector #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            result.<#= vector.s[i] #> = (left.<#= vector.s[i] #> < right.<#= vector.s[i] #>) ? left.<#= vector.s[i] #> : right.<#= vector.s[i] #>;
+<# } #>
+        }
+
+        public static <#= vector.vector #> Min(<#= vector.vector #> left, <#= vector.vector #> right)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            left.<#= vector.s[i] #> = (left.<#= vector.s[i] #> < right.<#= vector.s[i] #>) ? left.<#= vector.s[i] #> : right.<#= vector.s[i] #>;
+<# } #>
+            //<#= vector.vector #> result;
+            //Min(ref left, ref right, out result);
+            return left;
+        }
+		
+        public static void Max(ref <#= vector.vector #> left, ref <#= vector.vector #> right, out <#= vector.vector #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            result.<#= vector.s[i] #> = (left.<#= vector.s[i] #> > right.<#= vector.s[i] #>) ? left.<#= vector.s[i] #> : right.<#= vector.s[i] #>;
+<# } #>
+        }
+
+        public static <#= vector.vector #> Max(<#= vector.vector #> left, <#= vector.vector #> right)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            left.<#= vector.s[i] #> = (left.<#= vector.s[i] #> > right.<#= vector.s[i] #>) ? left.<#= vector.s[i] #> : right.<#= vector.s[i] #>;
+<# } #>
+            //<#= vector.vector #> result;
+            //Max(ref left, ref right, out result);
+            return left;
+        }
+
+        public static void Clamp(ref <#= vector.vector #> value, ref <#= vector.vector #> min, ref <#= vector.vector #> max, out <#= vector.vector #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            var <#= lwr #> = value.<#= vector.s[i] #>;
+            <#= lwr #> = (<#= lwr #> > max.<#= vector.s[i] #>) ? max.<#= vector.s[i] #> : <#= lwr #>;
+            <#= lwr #> = (<#= lwr #> < min.<#= vector.s[i] #>) ? min.<#= vector.s[i] #> : <#= lwr #>;
+			result.<#= vector.s[i] #> = <#= lwr #>;
+<# } #>
+        }
+
+        public static <#= vector.vector #> Clamp(<#= vector.vector #> value, <#= vector.vector #> min, <#= vector.vector #> max)
+        {
+            <#= vector.vector #> result;
+            Clamp(ref value, ref min, ref max, out result);
+            return result;
+        }
+
+        public static void Dot(ref <#= vector.vector #> left, ref <#= vector.vector #> right, out <#= vector.type #> result)
+        {
+<# if(vector.cast == 1) { #>
+            result = (<#= vector.type #>)(<#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>);
+<# } else { #>
+            result = <#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>;
+<# } #>
+        }
+
+        public static <#= vector.type #> Dot(<#= vector.vector #> left, <#= vector.vector #> right)
+        {
+<# if(vector.cast == 1) { #>
+            return (<#= vector.type #>)(<#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>);
+<# } else { #>
+            return <#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>;
+<# } #>
+        }
+
+        public static void Lerp(ref <#= vector.vector #> value1, ref <#= vector.vector #> value2, <#= vector.type!="double"?"float":vector.type #> amount, out <#= vector.vector #> result)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            //result.<#= vector.s[i] #> = value1.<#= vector.s[i] #> + (<#= vector.type #>)((value2.<#= vector.s[i] #> - value1.<#= vector.s[i] #>) * amount);
+            result.<#= vector.s[i] #> = Formula.Lerp(value1.<#= vector.s[i] #>, value2.<#= vector.s[i] #>, amount);
+<# } #>
+        }
+
+        public static <#= vector.vector #> Lerp(<#= vector.vector #> value1, <#= vector.vector #> value2, <#= vector.type!="double"?"float":vector.type #> amount)
+        {
+<# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
+            //value1.<#= vector.s[i] #> += (<#= vector.type #>)((value2.<#= vector.s[i] #> - value1.<#= vector.s[i] #>) * amount);
+			value1.<#= vector.s[i] #> = Formula.Lerp(value1.<#= vector.s[i] #>, value2.<#= vector.s[i] #>, amount);
+<# } #>
+			return value1;
+        }
+
+<# if(vector.ne==3) { #>
+        public static <#= vector.vector #> Cross(<#= vector.vector #> vector1, <#= vector.vector #> vector2)
+        {
+            <#= vector.vector #> vector;
+            vector.X = (vector1.Y * vector2.Z) - (vector1.Z * vector2.Y);
+            vector.Y = (vector1.Z * vector2.X) - (vector1.X * vector2.Z);
+            vector.Z = (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
+            return vector;
+        }
+
+        public static void Cross(ref <#= vector.vector #> vector1, ref <#= vector.vector #> vector2, out <#= vector.vector #> result)
+        {
+            result.X = (vector1.Y * vector2.Z) - (vector1.Z * vector2.Y);
+            result.Y = (vector1.Z * vector2.X) - (vector1.X * vector2.Z);
+            result.Z = (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
+        }
+
+<# } #>
+<# } } /*END MATH*/#>
 <#
-/*SKIP IT! 
-
-
-
-
-#>
+/* SKIP IT START #>
         public <#= vector.type #> this[VectorElement<#= vector.ne #> index]
         {
             get
@@ -400,7 +617,7 @@ namespace <#= zmqNamespace #>
             yield return <#= vector.s[i] #>;
 <# } #>
         }
-<# */ #>
+<# SKIP IT END */ #>
     }
 
 <# } // vector end loop #>
