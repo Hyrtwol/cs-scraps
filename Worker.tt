@@ -1,16 +1,19 @@
 ﻿<#@ include file="Shared.tt" #>
+using System;
 using System.Threading;
 
 namespace <#= zmqNamespace #>
 {
     public abstract class Worker
     {
-        public static int DelayBeforeAbort = 5000;
-
         private static readonly ManualResetEvent TerminateEvent = new ManualResetEvent(false);
         private Thread _newThread;
 
         public virtual string Name { get { return GetType().Name; } }
+
+        public virtual TimeSpan DelayBeforeAbort { get { return TimeSpan.FromSeconds(5.0); } }
+
+		public virtual int ThreadId { get { return _newThread.ManagedThreadId; } }
 
         protected Worker()
         {
