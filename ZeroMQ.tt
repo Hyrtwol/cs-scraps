@@ -39,10 +39,13 @@
 <#= ind #>// see also:
 <#= ind #>//   http://api.zeromq.org/<#= zmqVersion.Major #>-<#= zmqVersion.Minor #>:_start
 <#= ind #>//   C:\Program Files (x86)\ZeroMQ <#= zmqVersion #>\include\zmq.h
+<#= ind #>// ReSharper disable InconsistentNaming
+<#= ind #>// ReSharper disable UnusedMember.Global
+<#= ind #>// ReSharper disable MemberCanBePrivate.Global
+<#= ind #>// ReSharper disable ClassNeverInstantiated.Global
+<#= ind #>// ReSharper disable FieldCanBeMadeReadOnly.Global
 
 <#= ind #>using System;
-<#= ind #>using System.Diagnostics;
-<#= ind #>using System.Runtime.CompilerServices;
 <#= ind #>using System.Runtime.InteropServices;
 <#= ind #>using System.Text;
 
@@ -423,7 +426,7 @@ namespace <#= zmqNamespace #>
 
             public override string ToString()
             {
-                return Marshal.PtrToStringAnsi(handle);
+                return "\"" + Marshal.PtrToStringAnsi(handle) + "\"";
             }
         }
 
