@@ -44,8 +44,9 @@
 <#= ind #>// ReSharper disable MemberCanBePrivate.Global
 <#= ind #>// ReSharper disable ClassNeverInstantiated.Global
 <#= ind #>// ReSharper disable FieldCanBeMadeReadOnly.Global
-
 <#= ind #>using System;
+<#= ind #>using System.Diagnostics;
+<#= ind #>using System.Runtime.CompilerServices;
 <#= ind #>using System.Runtime.InteropServices;
 <#= ind #>using System.Text;
 
@@ -426,7 +427,7 @@ namespace <#= zmqNamespace #>
 
             public override string ToString()
             {
-                return "\"" + Marshal.PtrToStringAnsi(handle) + "\"";
+                return Marshal.PtrToStringAnsi(handle);
             }
         }
 
