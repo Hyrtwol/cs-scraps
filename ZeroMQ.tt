@@ -33,7 +33,7 @@
 <#= ind #>// solution configuration : <#= solutionConfig #>
 <#= ind #>// visual studio version: <#= dte.Version #>
 <#= ind #>// dll import file: <#= dllFile #>
-<#= ind #>// template file: <#= Host.TemplateFile #>
+<#= ind #>// template file: <#= Path.GetFileName(Host.TemplateFile) #>
 <#= ind #>// customToolNamespace: <#= customToolNamespace #>
 <#= ind #>// rootNamespace: <#= rootNamespace #>
 <#= ind #>// see also:
