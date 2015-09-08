@@ -28,7 +28,9 @@
 	var solutionConfig = dte.Solution.SolutionBuild.ActiveConfiguration.Name;
 	var vsVersion = new Version(dte.Version);
 	string dllFormat = settings.TryGetValue("DllFormat", out val) ? (string)val : "libzmq-v{0}{1}-mt-{2}_{3}_{4}.dll";
-	string dllFile = string.Format(dllFormat, vsVersion.Major, vsVersion.Minor, zmqVersion.Major, zmqVersion.Minor, zmqVersion.Build);
+	var major = vsVersion.Major;
+	if (major > 12) major = 12; // Visual Studio 2013 is the latest supported
+	string dllFile = string.Format(dllFormat, major, vsVersion.Minor, zmqVersion.Major, zmqVersion.Minor, zmqVersion.Build);
 #>
 <#= ind #>// solution configuration : <#= solutionConfig #>
 <#= ind #>// visual studio version: <#= dte.Version #>
