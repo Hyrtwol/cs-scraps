@@ -1,9 +1,18 @@
 ﻿<#@ include file="Shared.tt" #>
+<#
+bool embedConsoleUtils = true;
+if(settings.TryGetValue("EmbedConsoleUtils", out val))
+{
+    embedConsoleUtils = (bool)val;
+}
+#>
 using System;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+<# if(embedConsoleUtils) { #>
 using System.Runtime.InteropServices;
+<# } #>
 using System.ServiceProcess;
 using System.Threading;
 
@@ -124,7 +133,8 @@ namespace <#= zmqNamespace #>
                 if (vals.Length == 2) ConsoleUtils.SetWindowPos(vals[0], vals[1]);
             }
         }
-
+		
+<# if(embedConsoleUtils) { #>
         private static class ConsoleUtils
         {
             private static readonly IntPtr ThisConsole = GetConsoleWindow();
@@ -140,5 +150,6 @@ namespace <#= zmqNamespace #>
             [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
             private static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int y, int cx, int cy, int wFlags);
         }
+<# } #>
     }
 }
