@@ -5,6 +5,17 @@ if(settings.TryGetValue("EmbedConsoleUtils", out val))
 {
     embedConsoleUtils = (bool)val;
 }
+string interfaceName = settings.TryGetValue("InterfaceName", out val) ? (string)val : "I"+zmqClassName;
+bool embedInterface = true;
+if(settings.TryGetValue("EmbedInterface", out val))
+{
+    embedInterface = (bool)val;
+}
+bool disposeService = true;
+if(settings.TryGetValue("DisposeService", out val))
+{
+    disposeService = (bool)val;
+}
 #>
 using System;
 using System.Configuration;
@@ -18,14 +29,16 @@ using System.Threading;
 
 namespace <#= zmqNamespace #>
 {
-    public interface I<#= zmqClassName #> : IDisposable
+<# if(embedInterface) { #>
+    public interface <#= interfaceName #> : IDisposable
     {
         string Name { get; }
         void Start();
         void Stop();
     }
-
-    public class <#= zmqClassName #> : ServiceBase
+	
+<# } #>
+    <#= zmqVisibility #> class <#= zmqClassName #> : ServiceBase
     {
         // Required designer variable.
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
@@ -38,7 +51,7 @@ namespace <#= zmqNamespace #>
         private static readonly string Title = Assembly.GetEntryAssembly().GetName().Name;
         private static readonly ConsoleColor DefaultColor = Console.ForegroundColor;
 
-        public static void Run(I<#= zmqClassName #> service)
+        public static void Run(<#= interfaceName #> service)
         {
             var windowsService = new <#= zmqClassName #>(service);
             if (Environment.UserInteractive)
@@ -71,10 +84,11 @@ namespace <#= zmqNamespace #>
             }
         }
 
-        private readonly I<#= zmqClassName #> _service;
+        private readonly <#= interfaceName #> _service;
 
-        private WindowsService(I<#= zmqClassName #> service)
+        private WindowsService(<#= interfaceName #> service)
         {
+            if(service == null) throw new ArgumentNullException(nameof(service));
             ServiceName = service.Name;
             _service = service;
         }
@@ -92,7 +106,9 @@ namespace <#= zmqNamespace #>
                     components.Dispose();
                 }
             }
+<# if(disposeService) { #>
             if (_service != null) _service.Dispose();
+<# } #>
             base.Dispose(disposing);
         }
 
@@ -133,7 +149,7 @@ namespace <#= zmqNamespace #>
                 if (vals.Length == 2) ConsoleUtils.SetWindowPos(vals[0], vals[1]);
             }
         }
-		
+
 <# if(embedConsoleUtils) { #>
         private static class ConsoleUtils
         {
