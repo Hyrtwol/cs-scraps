@@ -56,7 +56,7 @@ namespace <#= zmqNamespace #>
             var windowsService = new <#= zmqClassName #>(service);
             if (Environment.UserInteractive)
             {
-                ConfigureConsole();
+                ConsoleUtils.ConfigureConsole(Title);
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("   .oOo.   .oOo.   .oOo.    Starting {0}     .oOo.   .oOo.   .oOo.   ", windowsService.ServiceName);
@@ -66,7 +66,7 @@ namespace <#= zmqNamespace #>
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("   .oOo.   .oOo.   .oOo.    Press ESC to stop    .oOo.   .oOo.   .oOo.   ");
                 Console.ForegroundColor = DefaultColor;
-                WairForEscape();
+                ConsoleUtils.WairForEscape();
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("   .oOo.   .oOo.   .oOo.    Stopping {0}     .oOo.   .oOo.   .oOo.   ", windowsService.ServiceName);
@@ -76,7 +76,7 @@ namespace <#= zmqNamespace #>
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("   .oOo.   .oOo.   .oOo.    Press ESC to exit    .oOo.   .oOo.   .oOo.   ");
                 Console.ForegroundColor = DefaultColor;
-                WairForEscape();
+                ConsoleUtils.WairForEscape();
             }
             else
             {
@@ -122,40 +122,52 @@ namespace <#= zmqNamespace #>
             _service.Stop();
         }
 
-        private static void WairForEscape()
-        {
-            ConsoleKey key;
-            do
-            {
-                if (Console.KeyAvailable) key = Console.ReadKey(true).Key;
-                else
-                {
-                    key = 0;
-                    Thread.Sleep(200);
-                }
-            } while (key != ConsoleKey.Escape);
-        }
-
-        private static void ConfigureConsole()
-        {
-            Console.Title = Title;
-            Console.SetWindowSize(DefaultConsoleWidth, DefaultConsoleHeight);
-            Console.SetBufferSize(DefaultConsoleWidth, 100);
-
-            var windowPosition = ConfigurationManager.AppSettings["window-position"];
-            if (!string.IsNullOrEmpty(windowPosition))
-            {
-                var vals = windowPosition.Split(' ').Select(int.Parse).ToArray();
-                if (vals.Length == 2) ConsoleUtils.SetWindowPos(vals[0], vals[1]);
-            }
-        }
-
 <# if(embedConsoleUtils) { #>
         private static class ConsoleUtils
         {
+			public static void ConfigureConsole(string title)
+			{
+				if (!string.IsNullOrEmpty(title)) Console.Title = title;
+
+				var windowSize = ConfigurationManager.AppSettings["window-size"];
+				if (!string.IsNullOrEmpty(windowSize))
+				{
+					var vals = windowSize.Split(' ').Select(int.Parse).ToArray();
+					if (vals.Length == 2)
+					{
+						Console.SetWindowSize(vals[0], vals[1]);
+						Console.SetBufferSize(vals[0], Math.Min(vals[1], 50));
+					}
+				}
+
+				var windowPosition = ConfigurationManager.AppSettings["window-position"];
+				if (!string.IsNullOrEmpty(windowPosition))
+				{
+					var vals = windowPosition.Split(' ').Select(int.Parse).ToArray();
+					if (vals.Length == 2)
+					{
+						ConsoleUtils.SetWindowPos(vals[0], vals[1]);
+					}
+				}
+			}
+
+			public static void WairForEscape()
+			{
+				ConsoleKey key;
+				do
+				{
+					if (Console.KeyAvailable) key = Console.ReadKey(true).Key;
+					else
+					{
+						key = 0;
+						Thread.Sleep(200);
+					}
+				} while (key != ConsoleKey.Escape);
+			}
+
             private static readonly IntPtr ThisConsole = GetConsoleWindow();
 
-            public static void SetWindowPos(int left, int top)
+            private static void SetWindowPos(int left, int top)
             {
                 SetWindowPos(ThisConsole, 0, left, top, 0, 0, 0x0001);
             }
