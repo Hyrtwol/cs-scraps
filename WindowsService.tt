@@ -46,36 +46,27 @@ namespace <#= zmqNamespace #>
 
         // http://msdn.microsoft.com/en-us/library/system.serviceprocess.serviceinstaller(v=vs.110).aspx
 
-        private const int DefaultConsoleWidth = 120;
-        private const int DefaultConsoleHeight = 25;
-        private static readonly string Title = Assembly.GetEntryAssembly().GetName().Name;
-        private static readonly ConsoleColor DefaultColor = Console.ForegroundColor;
+        public static ConsoleColor ConsoleColor = ConsoleColor.Cyan;
 
         public static void Run(<#= interfaceName #> service)
         {
             var windowsService = new <#= zmqClassName #>(service);
             if (Environment.UserInteractive)
             {
-                ConsoleUtils.ConfigureConsole(Title);
+                ConsoleUtils.ConfigureConsole(service.Name);
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Starting {0}     .oOo.   .oOo.   .oOo.   ", windowsService.ServiceName);
-                Console.ForegroundColor = DefaultColor;
                 windowsService.OnStart(null);
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Press ESC to stop    .oOo.   .oOo.   .oOo.   ");
-                Console.ForegroundColor = DefaultColor;
+                Console.ForegroundColor = ConsoleColor;
+                Console.WriteLine("Press ESC to stop");
+                Console.ResetColor();
                 ConsoleUtils.WaitForEscape();
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Stopping {0}     .oOo.   .oOo.   .oOo.   ", windowsService.ServiceName);
-                Console.ForegroundColor = DefaultColor;
                 windowsService.Stop();
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("   .oOo.   .oOo.   .oOo.    Press ESC to exit    .oOo.   .oOo.   .oOo.   ");
-                Console.ForegroundColor = DefaultColor;
+                Console.ForegroundColor = ConsoleColor;
+                Console.WriteLine("Press ESC to exit");
+                Console.ResetColor();
                 ConsoleUtils.WaitForEscape();
             }
             else
