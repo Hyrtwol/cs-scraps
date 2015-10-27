@@ -125,7 +125,7 @@ namespace <#= zmqNamespace #>
         {
 			public static void ConfigureConsole()
 			{
-				var windowSize = ConfigurationManager.AppSettings["window-size"];
+				var windowSize = ConfigurationManager.AppSettings["console-size"];
 				if (!string.IsNullOrEmpty(windowSize))
 				{
 					var vals = windowSize.Split(' ').Select(int.Parse).ToArray();
@@ -136,7 +136,7 @@ namespace <#= zmqNamespace #>
 					}
 				}
 
-				var windowPosition = ConfigurationManager.AppSettings["window-position"];
+				var windowPosition = ConfigurationManager.AppSettings["console-position"];
 				if (!string.IsNullOrEmpty(windowPosition))
 				{
 					var vals = windowPosition.Split(' ').Select(int.Parse).ToArray();
