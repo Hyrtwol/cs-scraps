@@ -535,8 +535,17 @@ if(vector.m>=2) {
             result = <#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>;
 <# } #>
         }
-
+		
         public static <#= vector.type #> Dot(<#= vector.vector #> left, <#= vector.vector #> right)
+        {
+<# if(vector.cast == 1) { #>
+            return (<#= vector.type #>)(<#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>);
+<# } else { #>
+            return <#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>;
+<# } #>
+        }
+
+        public static <#= vector.type #> Dot(ref <#= vector.vector #> left, ref <#= vector.vector #> right)
         {
 <# if(vector.cast == 1) { #>
             return (<#= vector.type #>)(<#= string.Join(" + ", vector.s.Select(s=>"(left."+s+"*right."+s+")").Take(vector.ne)) #>);
