@@ -269,7 +269,7 @@ foreach (var math in maths) { #>
         public static <#= vector.vector #> operator <#= math.sign #>(<#= vector.type #> value1, <#= vector.vector #> value2)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
-            value2.<#= vector.s[i] #> <#= math.sign #>= value1;
+            value2.<#= vector.s[i] #> = (<#= vector.type #>)(value1 <#= math.sign #> value2.<#= vector.s[i] #>);
 <# } #>
             return value2;
         }
