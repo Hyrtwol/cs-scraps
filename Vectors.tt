@@ -286,6 +286,7 @@ foreach (var math in maths) { #>
         {
             return !left.Equals(right);
         }
+
 <#
 /************************************
              EQUALITY
@@ -296,9 +297,9 @@ foreach (var math in maths) { #>
         public bool Equals(<#= vector.vector #> other)
         {
 <# if(vector.type=="float"||vector.type=="double") { #>
-            return (<#= string.Join(" && ", vector.s.Select(s=>"Epsilon.Compare("+s+", other."+s+")").Take(vector.ne)) #>);
+            return <#= string.Join(" && ", vector.s.Select(s=>"Epsilon.Compare("+s+", other."+s+")").Take(vector.ne)) #>;
 <# } else { #>
-            return (<#= string.Join(" && ", vector.s.Select(s=>s+" == other."+s).Take(vector.ne)) #>);
+            return <#= string.Join(" && ", vector.s.Select(s=>s+" == other."+s).Take(vector.ne)) #>;
 <# } #>
         }
 
