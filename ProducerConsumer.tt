@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace <#= zmqNamespace #>
 {
-    public class ProducerConsumer<T> where T : class
+    <#= zmqVisibility #><#= zmqPartial #> class ProducerConsumer<T> where T : class
     {
         private readonly object _listLock = new object();
         private readonly Queue<T> _queue = new Queue<T>();
