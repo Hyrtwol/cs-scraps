@@ -11,27 +11,27 @@
     var c = new []{ "R", "G", "B", "A" };
 	var vectors = new[]
     {
-        new { s=n, m=1, vector = "Byte4",     ne = 4, type = "byte",     size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { s=n, m=1, vector = "SByte4",    ne = 4, type = "sbyte",    size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { s=n, m=2, vector = "Int2",      ne = 2, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
-        new { s=n, m=2, vector = "Int3",      ne = 3, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
-        new { s=n, m=2, vector = "Int4",      ne = 4, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { s=n, m=2, vector = "Float2",    ne = 2, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f"           } },
-        new { s=n, m=2, vector = "Float3",    ne = 3, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
-        new { s=n, m=2, vector = "Float4",    ne = 4, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
-        //new { s=c, m=0, vector = "FloatRGB",  ne = 3, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
-        //new { s=c, m=0, vector = "FloatRGBA", ne = 4, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
-        new { s=n, m=2, vector = "Double2",   ne = 2, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d"           } },
-        new { s=n, m=2, vector = "Double3",   ne = 3, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d"      } },
-        new { s=n, m=2, vector = "Double4",   ne = 4, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d","4d" } },
-        new { s=n, m=0, vector = "Half2",     ne = 2, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f" } },
-        new { s=n, m=0, vector = "Half3",     ne = 3, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f" } },
-        new { s=n, m=0, vector = "Half4",     ne = 4, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f","(Half)4f" } },
-        new { s=c, m=0, vector = "ByteRGB",   ne = 3, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3"       } },
-        new { s=c, m=0, vector = "ByteRGBA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
-        new { s=c, m=0, vector = "ByteBGRA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
-		new { s=n, m=0, vector = "Bool4",     ne = 4, type = "bool",     size = 1, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "true", "false", "false", "true" } },
-		new { s=n, m=0, vector = "LongBool4", ne = 4, type = "LongBool", size = 4, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "LongBool.True", "LongBool.False", "LongBool.False", "LongBool.True" } }
+        new { mask=1, s=n, m=1, vector = "Byte4",     ne = 4, type = "byte",     size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=1, s=n, m=1, vector = "SByte4",    ne = 4, type = "sbyte",    size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=3, s=n, m=2, vector = "Int2",      ne = 2, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
+        new { mask=3, s=n, m=2, vector = "Int3",      ne = 3, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
+        new { mask=3, s=n, m=2, vector = "Int4",      ne = 4, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=1, s=n, m=2, vector = "Float2",    ne = 2, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f"           } },
+        new { mask=1, s=n, m=2, vector = "Float3",    ne = 3, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+        new { mask=1, s=n, m=2, vector = "Float4",    ne = 4, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+        //new { mask=1, s=c, m=0, vector = "FloatRGB",  ne = 3, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+        //new { mask=1, s=c, m=0, vector = "FloatRGBA", ne = 4, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+        new { mask=1, s=n, m=2, vector = "Double2",   ne = 2, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d"           } },
+        new { mask=1, s=n, m=2, vector = "Double3",   ne = 3, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d"      } },
+        new { mask=1, s=n, m=2, vector = "Double4",   ne = 4, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d","4d" } },
+        new { mask=1, s=n, m=0, vector = "Half2",     ne = 2, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f" } },
+        new { mask=1, s=n, m=0, vector = "Half3",     ne = 3, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f" } },
+        new { mask=1, s=n, m=0, vector = "Half4",     ne = 4, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f","(Half)4f" } },
+        new { mask=3, s=c, m=0, vector = "ByteRGB",   ne = 3, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3"       } },
+        new { mask=1, s=c, m=0, vector = "ByteRGBA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=1, s=c, m=0, vector = "ByteBGRA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+		new { mask=1, s=n, m=0, vector = "Bool4",     ne = 4, type = "bool",     size = 1, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "true", "false", "false", "true" } },
+		new { mask=1, s=n, m=0, vector = "LongBool4", ne = 4, type = "LongBool", size = 4, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "LongBool.True", "LongBool.False", "LongBool.False", "LongBool.True" } }
     };
 
 	var maths = new[]
@@ -47,9 +47,16 @@ using System.Runtime.InteropServices;
 
 namespace <#= zmqNamespace #>
 {
-<# foreach (var vector in vectors) { 
-
+<#
+int mask = (int)settings["Mask"];
 #>
+// mask = <#= mask #>
+
+<# 
+//foreach (var vector in vectors) { 
+foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
+#>
+    // mask = <#= (vector.mask & mask) #>
     [Serializable, StructLayout(LayoutKind.Sequential, Pack = <#= vector.size #>)]
     <#= zmqVisibility #><#= zmqPartial #> struct <#= vector.vector #> : IEquatable<<#= vector.vector #>>, IJsonFormattable
     {
