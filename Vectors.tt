@@ -11,7 +11,7 @@
     var c = new []{ "R", "G", "B", "A" };
 	var vectors = new[]
     {
-        new { mask=1, s=n, m=1, vector = "Byte4",     ne = 4, type = "byte",     size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=3, s=n, m=1, vector = "Byte4",     ne = 4, type = "byte",     size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
         new { mask=1, s=n, m=1, vector = "SByte4",    ne = 4, type = "sbyte",    size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
         new { mask=3, s=n, m=2, vector = "Int2",      ne = 2, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
         new { mask=3, s=n, m=2, vector = "Int3",      ne = 3, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
