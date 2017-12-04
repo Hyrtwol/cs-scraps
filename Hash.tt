@@ -124,7 +124,7 @@ namespace <#= zmqNamespace #>
             fixed (<#= zmqClassName #>* pThis = &this)
             {
                 long* pt = (long*)pThis, po = (long*)&other;
-                return (pt[0] == po[0]) & (pt[1] == po[1]);
+                return (pt[0] == po[0]) && (pt[1] == po[1]);
             }
         }
 
