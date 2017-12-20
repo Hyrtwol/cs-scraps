@@ -83,14 +83,14 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
 <# } #>
 <# if(vector.m>=2) { #>
 <# if(vector.ne == 3) { #>
-        public static readonly <#= vector.vector #> Up = UnitY;
-        public static readonly <#= vector.vector #> Down = -UnitY;
-        public static readonly <#= vector.vector #> Left = -UnitX;
         public static readonly <#= vector.vector #> Right = UnitX;
-        public static readonly <#= vector.vector #> ForwardRH = -UnitZ;
+        public static readonly <#= vector.vector #> Left = -UnitX;
+        public static readonly <#= vector.vector #> Up = UnitY;
+        public static readonly <#= vector.vector #> Down = -UnitY;		
         public static readonly <#= vector.vector #> ForwardLH = UnitZ;
-        public static readonly <#= vector.vector #> BackwardRH = UnitZ;
         public static readonly <#= vector.vector #> BackwardLH = -UnitZ;
+        public static readonly <#= vector.vector #> ForwardRH = -UnitZ;
+        public static readonly <#= vector.vector #> BackwardRH = UnitZ;
 <# } #>
 <# } #>
 
@@ -496,8 +496,6 @@ if(vector.m>=2) {
 <# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
             left.<#= vector.s[i] #> = (left.<#= vector.s[i] #> < right.<#= vector.s[i] #>) ? left.<#= vector.s[i] #> : right.<#= vector.s[i] #>;
 <# } #>
-            //<#= vector.vector #> result;
-            //Min(ref left, ref right, out result);
             return left;
         }
 		
@@ -513,8 +511,6 @@ if(vector.m>=2) {
 <# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
             left.<#= vector.s[i] #> = (left.<#= vector.s[i] #> > right.<#= vector.s[i] #>) ? left.<#= vector.s[i] #> : right.<#= vector.s[i] #>;
 <# } #>
-            //<#= vector.vector #> result;
-            //Max(ref left, ref right, out result);
             return left;
         }
 
