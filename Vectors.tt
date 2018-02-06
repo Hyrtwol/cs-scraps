@@ -1,37 +1,51 @@
 ﻿<#@ include file="Shared.tt" #>
 <#
+	bool NumElements = settings.TryGetValue("NumElements", out val) && (bool)val;
+	bool VectorFalgs = settings.TryGetValue("VectorFalgs", out val) && (bool)val;
+
     var frng = new []{ "float", "Float2", "Float3", "Float4" };
     var drng = new []{ "double", "Double2", "Double3", "Double4" };
     var hrng = new []{ "Half", "Half2", "Half3", "Half4" };
     var irng = new []{ "int", "Int2", "Int3", "Int4" };
+    var srng = new []{ "short", "Short2", "Short3", "Short4" };
     var brng = new []{ "byte", null, null, "Byte4" };
 	var zrng = new string[]{ };
 
-    var n = new []{ "X", "Y", "Z", "W" };
-    var c = new []{ "R", "G", "B", "A" };
+    var xyzw = new []{ "X", "Y", "Z", "W" };
+    var rgba = new []{ "R", "G", "B", "A" };
+    var bgra = new []{ "B", "G", "R", "A" };
+
+	var F = 1;
+	var I = 2;
+	var B = 3;
+
 	var vectors = new[]
     {
-        new { mask=3, s=n, m=1, vector = "Byte4",     ne = 4, type = "byte",     size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { mask=1, s=n, m=1, vector = "SByte4",    ne = 4, type = "sbyte",    size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { mask=3, s=n, m=2, vector = "Int2",      ne = 2, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
-        new { mask=3, s=n, m=2, vector = "Int3",      ne = 3, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
-        new { mask=3, s=n, m=2, vector = "Int4",      ne = 4, type = "int",      size = 4, cast=0, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
-        new { mask=1, s=n, m=2, vector = "Float2",    ne = 2, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f"           } },
-        new { mask=1, s=n, m=2, vector = "Float3",    ne = 3, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
-        new { mask=1, s=n, m=2, vector = "Float4",    ne = 4, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
-        //new { mask=1, s=c, m=0, vector = "FloatRGB",  ne = 3, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
-        //new { mask=1, s=c, m=0, vector = "FloatRGBA", ne = 4, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
-        new { mask=1, s=n, m=2, vector = "Double2",   ne = 2, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d"           } },
-        new { mask=1, s=n, m=2, vector = "Double3",   ne = 3, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d"      } },
-        new { mask=1, s=n, m=2, vector = "Double4",   ne = 4, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d","4d" } },
-        new { mask=1, s=n, m=0, vector = "Half2",     ne = 2, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f" } },
-        new { mask=1, s=n, m=0, vector = "Half3",     ne = 3, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f" } },
-        new { mask=1, s=n, m=0, vector = "Half4",     ne = 4, type = "Half",     size = 2, cast=1, rng=zrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f","(Half)4f" } },
-        new { mask=3, s=c, m=0, vector = "ByteRGB",   ne = 3, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3"       } },
-        new { mask=1, s=c, m=0, vector = "ByteRGBA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
-        new { mask=1, s=c, m=0, vector = "ByteBGRA",  ne = 4, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
-		new { mask=1, s=n, m=0, vector = "Bool4",     ne = 4, type = "bool",     size = 1, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "true", "false", "false", "true" } },
-		new { mask=1, s=n, m=0, vector = "LongBool4", ne = 4, type = "LongBool", size = 4, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "LongBool.True", "LongBool.False", "LongBool.False", "LongBool.True" } }
+		// st = scalar-type
+        new { mask=3, s=xyzw, m=1, vector = "Byte4",     ne = 4, st = I, type = "byte",     size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=1, s=xyzw, m=1, vector = "SByte4",    ne = 4, st = I, type = "sbyte",    size = 1, cast=1, rng=zrng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=3, s=xyzw, m=1, vector = "Short2",    ne = 2, st = I, type = "short",    size = 2, cast=1, rng=srng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
+        new { mask=3, s=xyzw, m=1, vector = "Short3",    ne = 3, st = I, type = "short",    size = 2, cast=1, rng=srng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
+        new { mask=3, s=xyzw, m=1, vector = "Short4",    ne = 4, st = I, type = "short",    size = 2, cast=1, rng=srng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=3, s=xyzw, m=2, vector = "Int2",      ne = 2, st = I, type = "int",      size = 4, cast=0, rng=irng, zo=new[]{"0","1"},   data = new []{ "1", "2"            } },
+        new { mask=3, s=xyzw, m=2, vector = "Int3",      ne = 3, st = I, type = "int",      size = 4, cast=0, rng=irng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3"       } },
+        new { mask=3, s=xyzw, m=2, vector = "Int4",      ne = 4, st = I, type = "int",      size = 4, cast=0, rng=irng, zo=new[]{"0","1"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=1, s=xyzw, m=2, vector = "Float2",    ne = 2, st = F, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f"           } },
+        new { mask=1, s=xyzw, m=2, vector = "Float3",    ne = 3, st = F, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+        new { mask=1, s=xyzw, m=2, vector = "Float4",    ne = 4, st = F, type = "float",    size = 4, cast=0, rng=frng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+      //new { mask=1, s=rgba, m=0, vector = "FloatRGB",  ne = 3, st = F, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f"      } },
+      //new { mask=1, s=rgba, m=0, vector = "FloatRGBA", ne = 4, st = F, type = "float",    size = 4, cast=0, rng=zrng, zo=new[]{"0f","1f"}, data = new []{ "1f","2f","3f","4f" } },
+        new { mask=1, s=xyzw, m=2, vector = "Double2",   ne = 2, st = F, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d"           } },
+        new { mask=1, s=xyzw, m=2, vector = "Double3",   ne = 3, st = F, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d"      } },
+        new { mask=1, s=xyzw, m=2, vector = "Double4",   ne = 4, st = F, type = "double",   size = 8, cast=0, rng=drng, zo=new[]{"0d","1d"}, data = new []{ "1d","2d","3d","4d" } },
+        new { mask=1, s=xyzw, m=0, vector = "Half2",     ne = 2, st = F, type = "Half",     size = 2, cast=1, rng=hrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f" } },
+        new { mask=1, s=xyzw, m=0, vector = "Half3",     ne = 3, st = F, type = "Half",     size = 2, cast=1, rng=hrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f" } },
+        new { mask=1, s=xyzw, m=0, vector = "Half4",     ne = 4, st = F, type = "Half",     size = 2, cast=1, rng=hrng, zo=new[]{"(Half)0f","(Half)1f"}, data = new []{ "(Half)1f","(Half)2f","(Half)3f","(Half)4f" } },
+        new { mask=3, s=rgba, m=0, vector = "ByteRGB",   ne = 3, st = I, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3"       } },
+        new { mask=1, s=rgba, m=0, vector = "ByteRGBA",  ne = 4, st = I, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+        new { mask=1, s=bgra, m=0, vector = "ByteBGRA",  ne = 4, st = I, type = "byte",     size = 1, cast=0, rng=zrng, zo=new[]{"0","255"},   data = new []{ "1", "2", "3", "4"  } },
+		new { mask=1, s=xyzw, m=0, vector = "Bool4",     ne = 4, st = B, type = "bool",     size = 1, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "true", "false", "false", "true" } },
+		new { mask=1, s=xyzw, m=0, vector = "LongBool4", ne = 4, st = B, type = "LongBool", size = 4, cast=0, rng=zrng, zo=new[]{"false","true"},   data = new []{ "LongBool.True", "LongBool.False", "LongBool.False", "LongBool.True" } }
     };
 
 	var maths = new[]
@@ -54,11 +68,25 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
     [Serializable, StructLayout(LayoutKind.Sequential, Pack = <#= vector.size #>)]
     <#= zmqVisibility #><#= zmqPartial #> struct <#= vector.vector #> : IEquatable<<#= vector.vector #>>, IJsonFormattable
     {
+<# if(VectorFalgs) { #>
+        public const VectorFalgs Flags = VectorFalgs.<#= vector.vector #>;
+        public static readonly int SizeInBytes = Flags.SizeInBytes();
+        public static readonly int ScalarSize = Flags.ScalarSize();
+        public static readonly int NumElements = Flags.NumberOfElements();
+<# } else { #>
 <# if(vector.vector == "Bool4") { #>
         public static readonly unsafe int SizeInBytes = sizeof(Bool4);
 <# } else { #>
-        public static readonly int SizeInBytes = Marshal.SizeOf(typeof (<#= vector.vector #>));
+        public static readonly unsafe int SizeInBytes = sizeof(<#= vector.vector #>);
 <# } #>
+<# if(NumElements) { #>
+<# /* #>
+        public static readonly int ScalarSize = <#= vector.size #>;
+<# */ #>
+        public static readonly unsafe int ScalarSize = sizeof(<#= vector.type #>);
+        public static readonly int NumElements = <#= vector.ne #>;
+<# } #>
+<# } // VectorFalgs  #>
 
         public static readonly <#= vector.vector #> Zero = new <#= vector.vector #>(<#= vector.zo[0] #>);
         public static readonly <#= vector.vector #> One = new <#= vector.vector #>(<#= vector.zo[1] #>);
@@ -88,7 +116,7 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
 <# } #>
 <# } #>
 
-<# if(vector.vector == "ByteBGRA") { #>
+<# if(vector.vector == "ByteBGRA__") { #>
         public <#= vector.type #> <#= vector.s[2] #>;
         public <#= vector.type #> <#= vector.s[1] #>;
         public <#= vector.type #> <#= vector.s[0] #>;
@@ -127,7 +155,11 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
 <# } #>
         }
 <# } else if(vector.ne == 4) { #>
+<# if(vector.s == bgra) { #>
+        public <#= vector.vector #>(<#= vector.type #> <#= vector.s[2].ToLower() #>, <#= vector.type #> <#= vector.s[1].ToLower() #>, <#= vector.type #> <#= vector.s[0].ToLower() #>, <#= vector.type #> <#= vector.s[3].ToLower() #>)
+<# } else { #>
         public <#= vector.vector #>(<#= vector.type #> <#= vector.s[0].ToLower() #>, <#= vector.type #> <#= vector.s[1].ToLower() #>, <#= vector.type #> <#= vector.s[2].ToLower() #>, <#= vector.type #> <#= vector.s[3].ToLower() #>)
+<# } #>
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
             <#= vector.s[i] #> = <#= vector.s[i].ToLower() #>;
@@ -139,7 +171,7 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
         {
             if (values == null) throw new ArgumentNullException("values");
             if (values.Length != <#= vector.ne #>) throw new ArgumentOutOfRangeException("values", "There must be <#= vector.ne #> and only <#= vector.ne #> input values for <#= vector.vector #>.");
-<# if(vector.vector == "ByteBGRA") { #>
+<# if(vector.vector == "ByteBGRA__") { #>
             <#= vector.s[2] #> = values[0];
             <#= vector.s[1] #> = values[1];
             <#= vector.s[0] #> = values[2];
@@ -150,7 +182,8 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
 <# } #>
 <# } #>
         }
-<# if(vector.m>0 && vector.ne > 2 && vector.rng.Length > 0) { #>
+<# /* if(vector.m>0 && vector.ne > 2 && vector.rng.Length > 0) { */ #>
+<# if(vector.ne > 2 && vector.rng.Length > 0) { #>
 
         public <#= vector.vector #>(<#= vector.rng[vector.ne-2] #> value, <#= vector.type #> <#= vector.s[vector.ne-1].ToLower() #>)
         {
@@ -183,13 +216,32 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
         {
             return *(<#= vector.rng[vector.ne-3] #>*)&value;
         }
-		
-        public static explicit operator <#= vector.vector #>(<#= vector.rng[vector.ne-2] #> value)
+
+<# } #>
+<# } #>
+<# // cast int vector to float
+   if(vector.st == I) { #>
+        public static explicit operator Float<#= vector.ne #>(<#= vector.vector #> value)
         {
-            return new <#= vector.vector #>(value, <#= vector.zo[0] #>);
+			Float<#= vector.ne #> result;
+<#  for (int i = 0; i < vector.ne; i++) { #>
+            result.<#= xyzw[i] #> = value.<#= vector.s[i] #>;
+<#  } #>
+            return result;
         }
 
 <# } #>
+<# // cast int vector to double
+   if(vector.st == I) { #>
+        public static explicit operator Double<#= vector.ne #>(<#= vector.vector #> value)
+        {
+			Double<#= vector.ne #> result;
+<#  for (int i = 0; i < vector.ne; i++) { #>
+            result.<#= xyzw[i] #> = value.<#= vector.s[i] #>;
+<#  } #>
+            return result;
+        }
+
 <# } #>
 <#
 /************************************
@@ -197,7 +249,6 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
 
 ************************************/
 #>
-<# if(vector.ne*vector.size == 4) { #>
 <# /* foreach (var vector2 in vectors.Where(v=>(v.vector!=vector.vector) && (v.type==vector.type) && (v.ne*v.size == 4))) { #>
         public static unsafe explicit operator <#= vector.vector #>(<#= vector2.vector #> value)
         {
@@ -205,19 +256,11 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
         }
 
 <# }*/ #>
-        public static unsafe explicit operator <#= vector.vector #>(int value)
-        {
-            return *(<#= vector.vector #>*)&value;
-        }
-
+<# if(vector.st != F) { #>
+<#  if(vector.ne*vector.size == 4) { #>
         public static unsafe explicit operator <#= vector.vector #>(uint value)
         {
             return *(<#= vector.vector #>*)&value;
-        }
-
-        public static unsafe explicit operator int(<#= vector.vector #> value)
-        {
-            return *(int*)&value;
         }
 
         public static unsafe explicit operator uint(<#= vector.vector #> value)
@@ -225,10 +268,28 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
             return *(uint*)&value;
         }
 
+<#   if(vector.s != xyzw) { #>
+        public static unsafe explicit operator int(<#= vector.vector #> value)
+        {
+            return *(int*)&value;
+        }
+
+<#   } #>
+<#  } #>
+<#  if(vector.ne*vector.size == 8) { #>
+        public static unsafe explicit operator <#= vector.vector #>(ulong value)
+        {
+            return *(<#= vector.vector #>*)&value;
+        }
+
+        public static unsafe explicit operator ulong(<#= vector.vector #> value)
+        {
+            return *(ulong*)&value;
+        }
+
+<#  } #>
 <# } #>
-<# if(vector.m>0) { 
-// add basic math
-#>
+<# if(vector.m>0) { /* add basic math */ #>
 <# /*
         public static Float3 operator +(Float3 value)
         {
@@ -248,9 +309,8 @@ foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
             return value;
         }
 		
-<# } 
-
-foreach (var math in maths) { #>
+<# } #>
+<# foreach (var math in maths) { #>
         public static <#= vector.vector #> operator <#= math.sign #>(<#= vector.vector #> value1, <#= vector.vector #> value2)
         {
 <# for (int i = 0; i < vector.ne; i++) { #>
@@ -275,8 +335,69 @@ foreach (var math in maths) { #>
             return value2;
         }
 
-<# }
-} // basic math end
+<# } #>
+<# if(vector.st == I) { #>
+<#  foreach (var math in maths) { #>
+        public static Float<#= vector.ne #> operator <#= math.sign #>(<#= vector.vector #> value1, float value2)
+        {
+            Float<#= vector.ne #> result;
+<#   for (int i = 0; i < vector.ne; i++) { #>
+            result.<#= vector.s[i] #> = value1.<#= vector.s[i] #> <#= math.sign #> value2;
+<#   } #>
+            return result;
+        }
+
+<#  } #>
+<#  if(vector.ne*vector.size > 0) { #>
+        public static unsafe <#= vector.vector #> operator &(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<#   if(vector.ne*vector.size == 4) #>
+            (*(uint*)&value1) &= (*(uint*)&value2);
+<#   else if(vector.ne*vector.size == 8) #>
+            (*(ulong*)&value1) &= (*(ulong*)&value2);
+<#   else for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> &= value2.<#= vector.s[i] #>;
+<#   } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator &(<#= vector.vector #> value1, <#= vector.type #> value2)
+        {
+<#   for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> &= value2;
+<#   } #>
+            return value1;
+        }
+
+        public static unsafe <#= vector.vector #> operator |(<#= vector.vector #> value1, <#= vector.vector #> value2)
+        {
+<#   if(vector.ne*vector.size == 4) #>
+            (*(uint*)&value1) |= (*(uint*)&value2);
+<#   else if(vector.ne*vector.size == 8) #>
+            (*(ulong*)&value1) |= (*(ulong*)&value2);
+<#   else for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> |= value2.<#= vector.s[i] #>;
+<#   } #>
+            return value1;
+        }
+
+        public static <#= vector.vector #> operator |(<#= vector.vector #> value1, <#= vector.type #> value2)
+        {
+<#   for (int i = 0; i < vector.ne; i++) { #>
+            value1.<#= vector.s[i] #> |= value2;
+<#   } #>
+            return value1;
+        }
+
+<#  } #>
+<# } #>
+<# } /* basic math end */ #>
+<#
+/************************************
+             EQUALITY
+			 FORMAT
+			 INDEXER
+************************************/
 #>
         public static bool operator ==(<#= vector.vector #> left, <#= vector.vector #> right)
         {
@@ -288,13 +409,6 @@ foreach (var math in maths) { #>
             return !left.Equals(right);
         }
 
-<#
-/************************************
-             EQUALITY
-			 FORMAT
-			 INDEXER
-************************************/
-#>
         public bool Equals(<#= vector.vector #> other)
         {
 <# if(vector.type=="float"||vector.type=="double") { #>
@@ -321,7 +435,9 @@ foreach (var math in maths) { #>
 
         public string ToJson()
         {
-<# if(vector.s == c) { #>
+<# if(vector.s == bgra) { #>
+            return JsonFormatter.FormatBGRA(<#= string.Join(", ", vector.s.Take(vector.ne)) #>);
+<# } else if(vector.s == rgba) { #>
             return JsonFormatter.Format<#= string.Concat(vector.s.Take(vector.ne)) #>(<#= string.Join(", ", vector.s.Take(vector.ne)) #>);
 <# } else { #>
             return JsonFormatter.Format<#= vector.ne #>(<#= string.Join(", ", vector.s.Take(vector.ne)) #>);
@@ -354,7 +470,7 @@ foreach (var math in maths) { #>
 		
         public <#= vector.type #>[] ToArray()
         {
-<# if(vector.vector == "ByteBGRA") { #>
+<# if(vector.vector == "ByteBGRA__") { #>
             return new[] { <#= string.Join(", ", vector.s[2], vector.s[1], vector.s[0], vector.s[3]) #> };
 <# } else { #>
             return new[] { <#= string.Join(", ", vector.s.Take(vector.ne)) #> };
@@ -407,10 +523,18 @@ foreach (var math in maths) { #>
             return left;
         }
 		
-<# }
-// basic math end
-if(vector.m>=2) {
-#>
+<# if(vector.st == I) { #>
+        public static <#= vector.vector #> <#= math.name #>(<#= vector.vector #> left, float right)
+        {
+<#  for (int i = 0; i < vector.ne; i++) { #>
+            left.<#= vector.s[i] #> = (<#= vector.type #>)(left.<#= vector.s[i] #> <#= math.sign #> right);
+<#  } #>
+            return left;
+        }
+
+<# } #>		
+<# } /* basic math end */ #>
+<# if(vector.m>=2) { #>
 <# if(vector.type != "byte") { #>
         public static void Negate(ref <#= vector.vector #> value, out <#= vector.vector #> result)
         {
@@ -556,7 +680,7 @@ if(vector.m>=2) {
         {
 <# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
             //result.<#= vector.s[i] #> = value1.<#= vector.s[i] #> + (<#= vector.type #>)((value2.<#= vector.s[i] #> - value1.<#= vector.s[i] #>) * amount);
-            result.<#= vector.s[i] #> = Formula.Lerp(value1.<#= vector.s[i] #>, value2.<#= vector.s[i] #>, amount);
+            result.<#= vector.s[i] #> = Scalar.Lerp(value1.<#= vector.s[i] #>, value2.<#= vector.s[i] #>, amount);
 <# } #>
         }
 
@@ -564,7 +688,7 @@ if(vector.m>=2) {
         {
 <# for (int i = 0; i < vector.ne; i++) { var lwr = vector.s[i].ToLower(); #>
             //value1.<#= vector.s[i] #> += (<#= vector.type #>)((value2.<#= vector.s[i] #> - value1.<#= vector.s[i] #>) * amount);
-			value1.<#= vector.s[i] #> = Formula.Lerp(value1.<#= vector.s[i] #>, value2.<#= vector.s[i] #>, amount);
+			value1.<#= vector.s[i] #> = Scalar.Lerp(value1.<#= vector.s[i] #>, value2.<#= vector.s[i] #>, amount);
 <# } #>
 			return value1;
         }
