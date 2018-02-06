@@ -173,7 +173,7 @@ namespace <#= zmqNamespace #>
             if (zip.ReadFileInfo())
                 return zip;
 
-            throw new System.IO.InvalidDataException();
+            throw new InvalidOperationException("InvalidData");
         }
         /// <summary>
         /// Add full contents of a file into the Zip storage

@@ -49,14 +49,8 @@ namespace <#= zmqNamespace #>
 {
 <#
 int mask = (int)settings["Mask"];
-#>
-// mask = <#= mask #>
-
-<# 
-//foreach (var vector in vectors) { 
 foreach (var vector in vectors.Where(v=>(v.mask & mask) > 0)) {
 #>
-    // mask = <#= (vector.mask & mask) #>
     [Serializable, StructLayout(LayoutKind.Sequential, Pack = <#= vector.size #>)]
     <#= zmqVisibility #><#= zmqPartial #> struct <#= vector.vector #> : IEquatable<<#= vector.vector #>>, IJsonFormattable
     {
